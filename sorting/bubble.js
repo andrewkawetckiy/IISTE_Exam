@@ -16,9 +16,3 @@ async function bubbleSort(arr) {
 
   showSortedArray(arr, "Bubble Sort");
 }
-
-function startBubble() {
-  resetBars();
-  let arr = [...bars];
-  bubbleSort(arr);
-}
