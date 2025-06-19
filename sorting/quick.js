@@ -18,14 +18,14 @@ async function partition(arr, low, high) {
       [arr[i], arr[j]] = [arr[j], arr[i]];
       updateBar(i, arr[i]);
       updateBar(j, arr[j]);
-      await sleep();
+      await sleep(); // Використовуємо sleep() з script.js
     }
   }
 
   [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
   updateBar(i + 1, arr[i + 1]);
   updateBar(high, arr[high]);
-  await sleep();
+  await sleep(); // Використовуємо sleep() з script.js
 
   return i + 1;
 }
