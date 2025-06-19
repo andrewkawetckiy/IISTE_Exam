@@ -1,46 +1,46 @@
 async function mergeSort(arr) {
-  const original = [...arr];
-  showOriginalArray(original);
+  const copy = [...arr];
 
-  if (arr.length > 1) {
-    const mid = Math.floor(arr.length / 2);
-    const left = arr.slice(0, mid);
-    const right = arr.slice(mid);
-
-    await mergeSort(left);
-    await mergeSort(right);
-
+  async function merge(left, right, target) {
     let i = 0, j = 0, k = 0;
 
     while (i < left.length && j < right.length) {
       if (left[i] < right[j]) {
-        arr[k] = left[i];
-        updateBar(k, arr[k]);
-        await sleep();
-        i++;
+        target[k] = left[i++];
       } else {
-        arr[k] = right[j];
-        updateBar(k, arr[k]);
-        await sleep();
-        j++;
+        target[k] = right[j++];
       }
-      k++;
+      updateBar(k++, target[k - 1]);
+      await sleep();
     }
 
     while (i < left.length) {
-      arr[k] = left[i];
-      updateBar(k, arr[k]);
+      target[k] = left[i++];
+      updateBar(k++, target[k - 1]);
       await sleep();
-      i++; k++;
     }
 
     while (j < right.length) {
-      arr[k] = right[j];
-      updateBar(k, arr[k]);
+      target[k] = right[j++];
+      updateBar(k++, target[k - 1]);
       await sleep();
-      j++; k++;
     }
   }
 
-  showSortedArray(arr, "Merge Sort");
+  async function sort(array) {
+    const n = array.length;
+    if (n < 2) return array;
+
+    const mid = Math.floor(n / 2);
+    const left = array.slice(0, mid);
+    const right = array.slice(mid);
+
+    await sort(left);
+    await sort(right);
+
+    await merge(left, right, array);
+    return array;
+  }
+
+  return sort(copy);
 }
