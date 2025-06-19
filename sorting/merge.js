@@ -16,12 +16,12 @@ async function mergeSort(arr) {
       if (left[i] < right[j]) {
         arr[k] = left[i];
         updateBar(k, arr[k]);
-        await sleep(50); // регулює швидкість анімації
+        await sleep();
         i++;
       } else {
         arr[k] = right[j];
         updateBar(k, arr[k]);
-        await sleep(50); // регулює швидкість анімації
+        await sleep();
         j++;
       }
       k++;
@@ -30,7 +30,7 @@ async function mergeSort(arr) {
     while (i < left.length) {
       arr[k] = left[i];
       updateBar(k, arr[k]);
-      await sleep(50); // регулює швидкість анімації
+      await sleep();
       i++;
       k++;
     }
@@ -38,7 +38,7 @@ async function mergeSort(arr) {
     while (j < right.length) {
       arr[k] = right[j];
       updateBar(k, arr[k]);
-      await sleep(50); // регулює швидкість анімації
+      await sleep();
       j++;
       k++;
     }
@@ -51,8 +51,4 @@ function startMerge() {
   resetBars();
   let arr = [...bars];
   mergeSort(arr);
-}
-
-async function sleep() {
-  return new Promise(resolve => setTimeout(resolve, sleepDuration));
 }
