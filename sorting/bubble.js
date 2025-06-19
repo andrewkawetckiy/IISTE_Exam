@@ -9,7 +9,7 @@ async function bubbleSort(arr) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         updateBar(j, arr[j]);
         updateBar(j + 1, arr[j + 1]);
-        await sleep(50);
+        await sleep();
       }
     }
   }
@@ -21,8 +21,4 @@ function startBubble() {
   resetBars();
   let arr = [...bars];
   bubbleSort(arr);
-}
-
-async function sleep() {
-  return new Promise(resolve => setTimeout(resolve, sleepDuration));
 }
