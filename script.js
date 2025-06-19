@@ -1,5 +1,5 @@
 let bars = [];
-const NUM_BARS = 15; // зменшили до 15
+const NUM_BARS = 15; // кількість стовпчиків
 const MAX_HEIGHT = 5;
 
 function setup() {
@@ -45,6 +45,20 @@ function resetBars() {
   const container = document.getElementById('bars-container');
   container.innerHTML = ''; // очищуємо
   setup(); // створюємо заново
+}
+
+// Функції для текстового виведення масивів
+function showOriginalArray(arr) {
+  const el = document.getElementById('original-array');
+  el.textContent = `[${arr.map(n => n.toFixed(2)).join(', ')}]`;
+}
+
+function showSortedArray(arr, sortName) {
+  const elRes = document.getElementById('sorted-array');
+  const elName = document.getElementById('sorted-by');
+
+  elRes.textContent = `[${arr.map(n => n.toFixed(2)).join(', ')}]`;
+  elName.textContent = sortName;
 }
 
 // Виклик setup при завантаженні
