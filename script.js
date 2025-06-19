@@ -22,3 +22,18 @@ function createBars(arr) {
 }
 
 createBars(array);
+
+
+import('./sorting/bubble.js').then(module => {
+  const startBtn = document.createElement("button");
+  startBtn.innerText = "Start Bubble Sort";
+  startBtn.style.position = "absolute";
+  startBtn.style.top = "10px";
+  startBtn.style.left = "10px";
+  startBtn.style.padding = "10px";
+  document.body.appendChild(startBtn);
+
+  startBtn.onclick = () => {
+    module.bubbleSort(array.slice(), 500); // копія масиву для сортування
+  };
+});
