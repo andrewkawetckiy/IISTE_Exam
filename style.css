@@ -23,8 +23,8 @@
   background-color: #555;
 }
 
-#array-info, #comparison {
-  margin-top: 20px;
+#array-info, #comparison, #speed-display {
+  margin-top: 15px;
   color: white;
   font-family: sans-serif;
   background-color: rgba(0, 0, 0, 0.5);
@@ -33,7 +33,8 @@
   width: max-content;
 }
 
-#array-info p, #comparison h3 {
+#array-info p,
+#speed-display p {
   margin: 5px 0;
 }
 
