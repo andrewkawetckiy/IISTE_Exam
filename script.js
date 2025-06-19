@@ -1,14 +1,14 @@
 let bars = [];
 const NUM_BARS = 15; // кількість стовпчиків
-const MAX_HEIGHT = 5;
+const MAX_HEIGHT = 15; // максимальна висота стовпчика
 
 function setup() {
   const container = document.getElementById('bars-container');
 
-  // Генеруємо масив випадкових значень
+  // Генеруємо цілі числа
   bars = [];
   for (let i = 0; i < NUM_BARS; i++) {
-    bars[i] = Math.random() * MAX_HEIGHT + 0.1;
+    bars[i] = Math.floor(Math.random() * MAX_HEIGHT) + 1;
   }
 
   // Створюємо 3D-циліндри
@@ -34,7 +34,7 @@ function updateBar(i, newHeight) {
     z: 0
   });
 
-  // Змінюємо колір для анімації
+  // Анімація обміну
   bar.setAttribute('color', '#ff0000');
   setTimeout(() => {
     bar.setAttribute('color', '#0099ff');
@@ -43,23 +43,22 @@ function updateBar(i, newHeight) {
 
 function resetBars() {
   const container = document.getElementById('bars-container');
-  container.innerHTML = ''; // очищуємо
-  setup(); // створюємо заново
+  container.innerHTML = '';
+  setup();
 }
 
-// Функції для текстового виведення масивів
+// Показ масивів
 function showOriginalArray(arr) {
   const el = document.getElementById('original-array');
-  el.textContent = `[${arr.map(n => n.toFixed(2)).join(', ')}]`;
+  el.textContent = `[${arr.join(', ')}]`;
 }
 
 function showSortedArray(arr, sortName) {
   const elRes = document.getElementById('sorted-array');
   const elName = document.getElementById('sorted-by');
 
-  elRes.textContent = `[${arr.map(n => n.toFixed(2)).join(', ')}]`;
+  elRes.textContent = `[${arr.join(', ')}]`;
   elName.textContent = sortName;
 }
 
-// Виклик setup при завантаженні
 window.onload = setup;
