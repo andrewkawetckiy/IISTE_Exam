@@ -2,7 +2,12 @@ let bars = [];
 const NUM_BARS = 15;
 const MAX_HEIGHT = 15;
 
-let speedMultiplier = 1;
+// Швидкість анімації
+let speedMultiplier = 1; // x1 за замовчуванням
+const MIN_SPEED = 0.1;
+const MAX_SPEED = 5;
+
+// Час сортування
 let timings = {};
 
 function setup() {
@@ -87,47 +92,58 @@ function updateTimingsTable() {
 }
 
 // Голосове керування
-if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-  const Recognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new Recognition();
+let recognitionActive = false;
+let recognition;
 
-  recognition.lang = "uk-UA";
-  recognition.continuous = true;
-  recognition.interimResults = false;
+function toggleVoiceControl() {
+  if (!recognitionActive) {
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const Recognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new Recognition();
 
-  recognition.onresult = function (event) {
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      const transcript = event.results[i][0].transcript.toLowerCase();
+      recognition.lang = "uk-UA";
+      recognition.continuous = true;
+      recognition.interimResults = false;
 
-      console.log("Розпізнано:", transcript);
+      recognition.onresult = function (event) {
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const transcript = event.results[i][0].transcript.toLowerCase();
 
-      if (transcript.includes("бульбашка") || transcript.includes("bubble")) {
-        startBubble();
-      } else if (transcript.includes("швидше")) {
-        speedMultiplier = Math.max(0.1, speedMultiplier - 0.2);
-        alert(`Швидкість: x${speedMultiplier.toFixed(1)}`);
-      } else if (transcript.includes("повільніше")) {
-        speedMultiplier = Math.min(2, speedMultiplier + 0.2);
-        alert(`Швидкість: x${speedMultiplier.toFixed(1)}`);
-      } else if (transcript.includes("швидкість один")) {
-        speedMultiplier = 1;
-        alert("Швидкість: x1");
-      }
+          console.log("Розпізнано:", transcript);
+
+          if (transcript.includes("бульбашка") || transcript.includes("bubble")) {
+            startBubble();
+          } else if (transcript.includes("швидше")) {
+            changeSpeed(0.2);
+          } else if (transcript.includes("повільніше")) {
+            changeSpeed(-0.2);
+          } else if (transcript.includes("швидкість один")) {
+            speedMultiplier = 1;
+            alert("Швидкість: x1");
+          }
+        }
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Помилка розпізнавання:", event.error);
+      };
+
+      recognition.start(); // Почати слухання
+      recognitionActive = true;
+      document.getElementById("voice-btn").innerText = "Вимкнути голосове керування";
     }
-  };
+  } else {
+    recognition.stop();
+    recognitionActive = false;
+    document.getElementById("voice-btn").innerText = "Увімкнути голосове керування";
+  }
+}
 
-  recognition.onerror = function (event) {
-    console.error("Помилка розпізнавання:", event.error);
-  };
-
-  recognition.start(); // Почати слухання
+// Керування швидкістю
+function changeSpeed(delta) {
+  speedMultiplier = Math.max(MIN_SPEED, Math.min(MAX_SPEED, speedMultiplier + delta));
+  document.getElementById("speed-value").innerText = `x${speedMultiplier.toFixed(1)}`;
 }
 
 window.onload = setup;
-
-function sleep(ms) {
-  return new Promise((resolve) =>
-    setTimeout(resolve, ms * (1 / speedMultiplier))
-  );
-}
