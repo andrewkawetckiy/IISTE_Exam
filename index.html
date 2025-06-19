@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <a-scene id="scene">
+    <a-scene background="color: #111122" id="scene">
+      <a-sky color="#111122"></a-sky>
       <a-entity camera position="0 5 20" look-controls></a-entity>
       <a-light type="ambient" intensity="0.8"></a-light>
       <a-light type="point" intensity="1" position="0 10 10"></a-light>
       <a-entity id="bars"></a-entity>
     </a-scene>
+
 
     <script src="script.js"></script>
   </body>
