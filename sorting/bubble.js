@@ -1,7 +1,4 @@
 async function bubbleSort(arr) {
-  const original = [...arr];
-  showOriginalArray(original);
-
   const n = arr.length;
   for (let i = 0; i < n - 1; i++) {
     for (let j = 0; j < n - i - 1; j++) {
@@ -9,10 +6,9 @@ async function bubbleSort(arr) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         updateBar(j, arr[j]);
         updateBar(j + 1, arr[j + 1]);
-        await sleep(); // Використовуємо sleep() з script.js
+        await sleep();
       }
     }
   }
-
-  showSortedArray(arr, "Bubble Sort");
+  return arr;
 }
