@@ -1,14 +1,6 @@
 let bars = [];
-const NUM_BARS = 15;
-const MAX_HEIGHT = 15;
-
-// Швидкість анімації
-let speedMultiplier = 1; // x1 за замовчуванням
-const MIN_SPEED = 0.1;
-const MAX_SPEED = 5;
-
-// Час сортування
-let timings = {};
+const NUM_BARS = 15; // кількість стовпчиків
+const MAX_HEIGHT = 15; // максимальна висота стовпчика
 
 function setup() {
   const container = document.getElementById('bars-container');
@@ -25,6 +17,7 @@ function setup() {
     bar.setAttribute('height', height);
     bar.setAttribute('color', '#0099ff');
     bar.setAttribute('id', `bar-${i}`);
+    bar.setAttribute('order', i); // Задаємо порядок зображення
     container.appendChild(bar);
   });
 }
@@ -35,7 +28,7 @@ function updateBar(i, newHeight) {
 
   bar.setAttribute('height', newHeight);
   bar.setAttribute('position', {
-    x: i - NUM_BARS / 2,
+    x: i - NUM_BARS / 2, // Правильна позиція за індексом
     y: newHeight / 2,
     z: 0
   });
@@ -64,91 +57,5 @@ function showSortedArray(arr, sortName) {
   elRes.textContent = `[${arr.join(', ')}]`;
   elName.textContent = sortName;
 }
-
-function startTimer() {
-  return performance.now();
-}
-
-function endTimer(name, startTime) {
-  const endTime = performance.now();
-  const duration = endTime - startTime;
-  timings[name] = duration.toFixed(2);
-  updateTimingsTable();
-}
-
-function updateTimingsTable() {
-  const container = document.getElementById("timings");
-  if (!container) return;
-
-  container.innerHTML = `
-    <h3>⏱️ Час сортування:</h3>
-    <ul>
-      ${Object.entries(timings)
-        .sort((a, b) => a[1] - b[1])
-        .map(([name, time]) => `<li><strong>${name}:</strong> ${time} мс</li>`)
-        .join("")}
-    </ul>
-  `;
-}
-
-// Голосове керування
-let recognitionActive = false;
-let recognition;
-
-function toggleVoiceControl() {
-  if (!recognitionActive) {
-    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-      const Recognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new Recognition();
-
-      recognition.lang = "uk-UA";
-      recognition.continuous = true;
-      recognition.interimResults = false;
-
-      recognition.onresult = function (event) {
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          const transcript = event.results[i][0].transcript.toLowerCase();
-
-          console.log("Розпізнано:", transcript);
-
-          if (transcript.includes("бульбашка") || transcript.includes("bubble")) {
-            startBubble();
-          } else if (transcript.includes("швидше")) {
-            changeSpeed(0.2);
-          } else if (transcript.includes("повільніше")) {
-            changeSpeed(-0.2);
-          } else if (transcript.includes("швидкість один")) {
-            speedMultiplier = 1;
-            alert("Швидкість: x1");
-          }
-        }
-      };
-
-      recognition.onerror = function (event) {
-        console.error("Помилка розпізнавання:", event.error);
-      };
-
-      recognition.start(); // Почати слухання
-      recognitionActive = true;
-      document.getElementById("voice-btn").innerText = "Вимкнути голосове керування";
-    }
-  } else {
-    recognition.stop();
-    recognitionActive = false;
-    document.getElementById("voice-btn").innerText = "Увімкнути голосове керування";
-  }
-}
-
-// Керування швидкістю
-function changeSpeed(delta) {
-  speedMultiplier = Math.max(MIN_SPEED, Math.min(MAX_SPEED, speedMultiplier + delta));
-  document.getElementById("speed-value").innerText = `x${speedMultiplier.toFixed(1)}`;
-}
-
-// Глобальна sleep(), доступна у всіх файлах
-window.sleep = function (ms) {
-  return new Promise(resolve => setTimeout(resolve, ms * (1 / speedMultiplier)));
-};
 
 window.onload = setup;

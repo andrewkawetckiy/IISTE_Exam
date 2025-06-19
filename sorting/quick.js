@@ -1,22 +1,12 @@
 async function quickSort(arr, low = 0, high = arr.length - 1) {
-  if (low === 0 && high === arr.length - 1) {
-    const startTime = startTimer();
-
-    await _quickSort(arr, low, high);
-
-    endTimer("Quick Sort", startTime);
-    showSortedArray(arr, "Quick Sort");
-  } else {
-    await _quickSort(arr, low, high);
-  }
-}
-
-async function _quickSort(arr, low, high) {
   if (low < high) {
     const pi = await partition(arr, low, high);
+
     await quickSort(arr, low, pi - 1);
     await quickSort(arr, pi + 1, high);
   }
+
+  showSortedArray(arr, "Quick Sort");
 }
 
 async function partition(arr, low, high) {
