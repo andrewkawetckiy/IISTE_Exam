@@ -5,7 +5,6 @@ const MAX_HEIGHT = 15;
 let sleepDuration = 50; // швидкість анімації за замовчуванням
 let recognition;
 
-// Функція sleep()
 function sleep() {
   return new Promise(resolve => setTimeout(resolve, sleepDuration));
 }
@@ -65,6 +64,32 @@ function showSortedArray(arr, sortName) {
   elName.textContent = sortName;
 }
 
+// Порівняння часу сортування
+async function measureSortTime(sortFunction, sortName) {
+  const arr = [];
+  for (let i = 0; i < NUM_BARS; i++) {
+    arr[i] = Math.floor(Math.random() * MAX_HEIGHT) + 1;
+  }
+
+  const startTime = performance.now();
+  await sortFunction([...arr]);
+  const endTime = performance.now();
+
+  const duration = endTime - startTime;
+
+  updateComparisonTable(sortName, duration.toFixed(2));
+}
+
+function updateComparisonTable(algorithm, time) {
+  const rows = document.querySelectorAll('#comparison-body tr');
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    if (cells[0].textContent === algorithm) {
+      cells[1].textContent = `${time} мс`;
+    }
+  });
+}
+
 // Голосове управління
 function initSpeechRecognition() {
   if (!('webkitSpeechRecognition' in window)) {
@@ -96,7 +121,7 @@ function initSpeechRecognition() {
 function startVoiceControl() {
   if (!recognition) initSpeechRecognition();
   recognition.start();
-  alert("🎧 Слухаю... Скажіть: bubble sort, quick sort, merge sort, reset або speed [1-3]");
+  alert("🎧 Слухаю... Скажіть: bubble sort, quick sort, merge sort, reset або speed [faster/slower/normal]");
 }
 
 function handleVoiceCommand(command) {
@@ -108,20 +133,51 @@ function handleVoiceCommand(command) {
     startMerge();
   } else if (command.includes('reset')) {
     resetBars();
-  } else if (command.includes('speed one')) {
-    setSpeed(100);
-  } else if (command.includes('speed two')) {
-    setSpeed(50);
-  } else if (command.includes('speed three')) {
-    setSpeed(20);
+  } else if (command.includes('faster')) {
+    increaseSpeed();
+  } else if (command.includes('slower')) {
+    decreaseSpeed();
+  } else if (command.includes('normal')) {
+    resetSpeed();
   } else {
     alert("❌ Не розумію: " + command);
   }
 }
 
+// Керування швидкістю
 function setSpeed(ms) {
   sleepDuration = ms;
   alert("⏱️ Швидкість оновлена: " + ms + " мс");
+}
+
+function increaseSpeed() {
+  if (sleepDuration > 10) {
+    sleepDuration -= 10;
+    alert("⏱️ Швидкість збільшена: " + sleepDuration + " мс");
+  }
+}
+
+function decreaseSpeed() {
+  sleepDuration += 10;
+  alert("⏱️ Швидкість зменшена: " + sleepDuration + " мс");
+}
+
+function resetSpeed() {
+  sleepDuration = 50;
+  alert("⏱️ Швидкість скинута до нормальної: " + sleepDuration + " мс");
+}
+
+// Запуск алгоритмів
+function startBubble() {
+  measureSortTime(bubbleSort, "Bubble Sort");
+}
+
+function startQuick() {
+  measureSortTime(quickSort, "Quick Sort");
+}
+
+function startMerge() {
+  measureSortTime(mergeSort, "Merge Sort");
 }
 
 window.onload = setup;
