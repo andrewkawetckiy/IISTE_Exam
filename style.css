@@ -23,7 +23,7 @@
   background-color: #555;
 }
 
-#array-info {
+#array-info, #comparison {
   margin-top: 20px;
   color: white;
   font-family: sans-serif;
@@ -33,6 +33,25 @@
   width: max-content;
 }
 
-#array-info p {
+#array-info p, #comparison h3 {
   margin: 5px 0;
+}
+
+#comparison table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#comparison th,
+#comparison td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #555;
+}
+
+#comparison th {
+  background-color: #444;
 }
