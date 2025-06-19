@@ -23,6 +23,6 @@ function startBubble() {
   bubbleSort(arr);
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+async function sleep() {
+  return new Promise(resolve => setTimeout(resolve, sleepDuration));
 }
