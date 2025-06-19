@@ -66,17 +66,13 @@ function showSortedArray(arr, sortName) {
 
 // Порівняння часу сортування
 async function measureSortTime(sortFunction, sortName) {
-  const arr = [];
-  for (let i = 0; i < NUM_BARS; i++) {
-    arr[i] = Math.floor(Math.random() * MAX_HEIGHT) + 1;
-  }
+  const arr = JSON.parse(JSON.stringify(bars)); // глибока копія
 
   const startTime = performance.now();
   await sortFunction([...arr]);
   const endTime = performance.now();
 
   const duration = endTime - startTime;
-
   updateComparisonTable(sortName, duration.toFixed(2));
 }
 
@@ -145,26 +141,33 @@ function handleVoiceCommand(command) {
 }
 
 // Керування швидкістю
+function updateSpeedDisplay() {
+  const speedEl = document.getElementById('current-speed');
+  if (speedEl) {
+    speedEl.textContent = sleepDuration;
+  }
+}
+
 function setSpeed(ms) {
   sleepDuration = ms;
-  alert("⏱️ Швидкість оновлена: " + ms + " мс");
+  updateSpeedDisplay();
 }
 
 function increaseSpeed() {
   if (sleepDuration > 10) {
     sleepDuration -= 10;
-    alert("⏱️ Швидкість збільшена: " + sleepDuration + " мс");
+    updateSpeedDisplay();
   }
 }
 
 function decreaseSpeed() {
   sleepDuration += 10;
-  alert("⏱️ Швидкість зменшена: " + sleepDuration + " мс");
+  updateSpeedDisplay();
 }
 
 function resetSpeed() {
   sleepDuration = 50;
-  alert("⏱️ Швидкість скинута до нормальної: " + sleepDuration + " мс");
+  updateSpeedDisplay();
 }
 
 // Запуск алгоритмів
@@ -173,11 +176,14 @@ function startBubble() {
 }
 
 function startQuick() {
-  measureSortTime(quickSort, "Quick Sort");
+  measureSortTime(() => quickSort(JSON.parse(JSON.stringify(bars))), "Quick Sort");
 }
 
 function startMerge() {
-  measureSortTime(mergeSort, "Merge Sort");
+  measureSortTime(() => mergeSort(JSON.parse(JSON.stringify(bars))), "Merge Sort");
 }
 
-window.onload = setup;
+window.onload = () => {
+  setup();
+  updateSpeedDisplay();
+};
