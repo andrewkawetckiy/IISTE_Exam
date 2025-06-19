@@ -18,20 +18,14 @@ async function partition(arr, low, high) {
       [arr[i], arr[j]] = [arr[j], arr[i]];
       updateBar(i, arr[i]);
       updateBar(j, arr[j]);
-      await sleep(); // Використовуємо sleep() з script.js
+      await sleep();
     }
   }
 
   [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
   updateBar(i + 1, arr[i + 1]);
   updateBar(high, arr[high]);
-  await sleep(); // Використовуємо sleep() з script.js
+  await sleep();
 
   return i + 1;
-}
-
-function startQuick() {
-  resetBars();
-  let arr = [...bars];
-  quickSort(arr);
 }
