@@ -146,4 +146,9 @@ function changeSpeed(delta) {
   document.getElementById("speed-value").innerText = `x${speedMultiplier.toFixed(1)}`;
 }
 
+// Глобальна sleep(), доступна у всіх файлах
+window.sleep = function (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms * (1 / speedMultiplier)));
+};
+
 window.onload = setup;
