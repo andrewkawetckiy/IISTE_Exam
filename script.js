@@ -1,30 +1,47 @@
-import { bubbleSort } from './sorting/bubble.js';
+let bars = [];
+const NUM_BARS = 50;
+const MAX_HEIGHT = 5;
 
-const array = [5, 1, 4, 3, 2, 6, 9, 7, 8];
-const barWidth = 1;
-const spacing = 1.2;
-const scene = document.querySelector("#bars");
+function setup() {
+  const container = document.getElementById('bars-container');
 
-function createBars(arr) {
-  scene.innerHTML = "";
-  arr.forEach((value, i) => {
-    const bar = document.createElement("a-box");
-    bar.setAttribute("color", "#4CC3D9");
-    bar.setAttribute("depth", 1);
-    bar.setAttribute("width", barWidth);
-    bar.setAttribute("height", value);
-    bar.setAttribute("position", {
-      x: i * spacing,
-      y: value / 2,
-      z: 0
-    });
-    scene.appendChild(bar);
+  // Генеруємо масив випадкових значень
+  for (let i = 0; i < NUM_BARS; i++) {
+    bars[i] = Math.random() * MAX_HEIGHT + 0.1;
+  }
+
+  // Створюємо 3D-циліндри для кожного елемента масиву
+  bars.forEach((height, i) => {
+    const bar = document.createElement('a-cylinder');
+    bar.setAttribute('position', { x: i - NUM_BARS / 2, y: height / 2, z: 0 });
+    bar.setAttribute('radius', 0.2);
+    bar.setAttribute('height', height);
+    bar.setAttribute('color', '#0099ff');
+    bar.setAttribute('id', `bar-${i}`);
+    container.appendChild(bar);
   });
 }
 
-createBars(array);
+function updateBar(i, newHeight) {
+  const bar = document.querySelector(`#bar-${i}`);
+  if (!bar) return;
 
-const startBtn = document.querySelector("#startBtn");
-startBtn.onclick = () => {
-  bubbleSort(array.slice(), 300); // копія масиву
-};
+  bar.setAttribute('height', newHeight);
+  bar.setAttribute('position', {
+    x: bar.getAttribute('position').x,
+    y: newHeight / 2,
+    z: 0
+  });
+
+  // Змінюємо колір для анімації
+  bar.setAttribute('color', '#ff0000');
+  setTimeout(() => {
+    bar.setAttribute('color', '#0099ff');
+  }, 100);
+}
+
+function resetBars() {
+  const container = document.getElementById('bars-container');
+  container.innerHTML = ''; // очищуємо
+  setup(); // створюємо заново
+}
