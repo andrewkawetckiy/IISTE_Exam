@@ -2,6 +2,8 @@ async function bubbleSort(arr) {
   const original = [...arr];
   showOriginalArray(original);
 
+  const startTime = startTimer();
+
   const n = arr.length;
   for (let i = 0; i < n - 1; i++) {
     for (let j = 0; j < n - i - 1; j++) {
@@ -14,6 +16,7 @@ async function bubbleSort(arr) {
     }
   }
 
+  endTimer("Bubble Sort", startTime);
   showSortedArray(arr, "Bubble Sort");
 }
 
@@ -21,8 +24,4 @@ function startBubble() {
   resetBars();
   let arr = [...bars];
   bubbleSort(arr);
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
