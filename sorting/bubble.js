@@ -6,7 +6,7 @@ async function bubbleSort(arr) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         updateBar(j, arr[j]);
         updateBar(j + 1, arr[j + 1]);
-        await sleep(50); // пауза для анімації
+        await sleep(100); // регулює швидкість анімації
       }
     }
   }
