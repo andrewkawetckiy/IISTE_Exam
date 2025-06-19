@@ -18,23 +18,13 @@ function createBars(arr) {
       y: value / 2,
       z: 0
     });
-    bar.setAttribute("id", `bar-${i}`);
     scene.appendChild(bar);
   });
 }
 
 createBars(array);
 
-// Додати кнопку
-const startBtn = document.createElement("button");
-startBtn.innerText = "Start Bubble Sort";
-startBtn.style.position = "absolute";
-startBtn.style.top = "10px";
-startBtn.style.left = "10px";
-startBtn.style.padding = "10px";
-startBtn.style.zIndex = 10;
-document.body.appendChild(startBtn);
-
+const startBtn = document.querySelector("#startBtn");
 startBtn.onclick = () => {
   bubbleSort(array.slice(), 300); // копія масиву
 };
