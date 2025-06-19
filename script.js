@@ -5,6 +5,11 @@ const MAX_HEIGHT = 15;
 let sleepDuration = 50; // швидкість анімації за замовчуванням
 let recognition;
 
+// Функція sleep()
+function sleep() {
+  return new Promise(resolve => setTimeout(resolve, sleepDuration));
+}
+
 function setup() {
   const container = document.getElementById('bars-container');
 
