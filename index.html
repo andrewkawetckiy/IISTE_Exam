@@ -4,19 +4,11 @@
     <meta charset="UTF-8" />
     <title>3D Sorting Visualization</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      button {
-        font-size: 16px;
-        font-family: sans-serif;
-        cursor: pointer;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <button id="startBtn">Start Bubble Sort</button>
+
     <a-scene background="color: #111122" id="scene">
       <a-sky color="#111122"></a-sky>
       <a-entity camera position="0 5 20" look-controls></a-entity>
@@ -25,7 +17,6 @@
       <a-entity id="bars"></a-entity>
     </a-scene>
 
-    <!-- Основний скрипт -->
     <script type="module" src="./script.js"></script>
   </body>
 </html>
