@@ -10,7 +10,7 @@
 <body>
   <a-scene background="color: #222">
 
-    <!-- Камера з контролем мишкою -->
+    <!-- Камера -->
     <a-entity 
       camera 
       look-controls="pointerLockEnabled: true"
@@ -22,19 +22,19 @@
     <a-light type="ambient" color="#ccc"></a-light>
     <a-light type="directional" color="#fff" position="-1 1 0"></a-light>
 
-    <!-- Контейнер для стовпчиків -->
+    <!-- Стовпчики -->
     <a-entity id="bars-container" position="0 0 0"></a-entity>
 
   </a-scene>
 
-  <!-- Панель управління -->
+  <!-- Управління -->
   <div id="controls">
     <button onclick="startBubble()">Bubble Sort</button>
     <button onclick="startQuick()">Quick Sort</button>
     <button onclick="startMerge()">Merge Sort</button>
     <button onclick="resetBars()">Reset</button>
 
-    <!-- Текстові поля для масивів -->
+    <!-- Інформація про масиви -->
     <div id="array-info">
       <p><strong>Original:</strong> <span id="original-array">-</span></p>
       <p><strong>Sorted by:</strong> <span id="sorted-by">-</span></p>
