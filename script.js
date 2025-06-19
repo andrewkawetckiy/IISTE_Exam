@@ -1,16 +1,17 @@
 let bars = [];
-const NUM_BARS = 50;
+const NUM_BARS = 15; // зменшили до 15
 const MAX_HEIGHT = 5;
 
 function setup() {
   const container = document.getElementById('bars-container');
 
   // Генеруємо масив випадкових значень
+  bars = [];
   for (let i = 0; i < NUM_BARS; i++) {
     bars[i] = Math.random() * MAX_HEIGHT + 0.1;
   }
 
-  // Створюємо 3D-циліндри для кожного елемента масиву
+  // Створюємо 3D-циліндри
   bars.forEach((height, i) => {
     const bar = document.createElement('a-cylinder');
     bar.setAttribute('position', { x: i - NUM_BARS / 2, y: height / 2, z: 0 });
@@ -45,3 +46,6 @@ function resetBars() {
   container.innerHTML = ''; // очищуємо
   setup(); // створюємо заново
 }
+
+// Виклик setup при завантаженні
+window.onload = setup;
