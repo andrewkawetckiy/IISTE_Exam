@@ -31,16 +31,14 @@ async function mergeSort(arr) {
       arr[k] = left[i];
       updateBar(k, arr[k]);
       await sleep();
-      i++;
-      k++;
+      i++; k++;
     }
 
     while (j < right.length) {
       arr[k] = right[j];
       updateBar(k, arr[k]);
       await sleep();
-      j++;
-      k++;
+      j++; k++;
     }
   }
 
