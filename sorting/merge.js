@@ -52,3 +52,7 @@ function startMerge() {
   let arr = [...bars];
   mergeSort(arr);
 }
+
+async function sleep() {
+  return new Promise(resolve => setTimeout(resolve, sleepDuration));
+}
