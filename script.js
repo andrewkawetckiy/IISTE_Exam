@@ -1,6 +1,9 @@
 let bars = [];
-const NUM_BARS = 15; // кількість стовпчиків
-const MAX_HEIGHT = 15; // максимальна висота стовпчика
+const NUM_BARS = 15;
+const MAX_HEIGHT = 15;
+
+let speedMultiplier = 1;
+let timings = {};
 
 function setup() {
   const container = document.getElementById('bars-container');
@@ -17,7 +20,6 @@ function setup() {
     bar.setAttribute('height', height);
     bar.setAttribute('color', '#0099ff');
     bar.setAttribute('id', `bar-${i}`);
-    bar.setAttribute('order', i); // Задаємо порядок зображення
     container.appendChild(bar);
   });
 }
@@ -28,7 +30,7 @@ function updateBar(i, newHeight) {
 
   bar.setAttribute('height', newHeight);
   bar.setAttribute('position', {
-    x: i - NUM_BARS / 2, // Правильна позиція за індексом
+    x: i - NUM_BARS / 2,
     y: newHeight / 2,
     z: 0
   });
@@ -58,4 +60,74 @@ function showSortedArray(arr, sortName) {
   elName.textContent = sortName;
 }
 
+function startTimer() {
+  return performance.now();
+}
+
+function endTimer(name, startTime) {
+  const endTime = performance.now();
+  const duration = endTime - startTime;
+  timings[name] = duration.toFixed(2);
+  updateTimingsTable();
+}
+
+function updateTimingsTable() {
+  const container = document.getElementById("timings");
+  if (!container) return;
+
+  container.innerHTML = `
+    <h3>⏱️ Час сортування:</h3>
+    <ul>
+      ${Object.entries(timings)
+        .sort((a, b) => a[1] - b[1])
+        .map(([name, time]) => `<li><strong>${name}:</strong> ${time} мс</li>`)
+        .join("")}
+    </ul>
+  `;
+}
+
+// Голосове керування
+if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+  const Recognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new Recognition();
+
+  recognition.lang = "uk-UA";
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onresult = function (event) {
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      const transcript = event.results[i][0].transcript.toLowerCase();
+
+      console.log("Розпізнано:", transcript);
+
+      if (transcript.includes("бульбашка") || transcript.includes("bubble")) {
+        startBubble();
+      } else if (transcript.includes("швидше")) {
+        speedMultiplier = Math.max(0.1, speedMultiplier - 0.2);
+        alert(`Швидкість: x${speedMultiplier.toFixed(1)}`);
+      } else if (transcript.includes("повільніше")) {
+        speedMultiplier = Math.min(2, speedMultiplier + 0.2);
+        alert(`Швидкість: x${speedMultiplier.toFixed(1)}`);
+      } else if (transcript.includes("швидкість один")) {
+        speedMultiplier = 1;
+        alert("Швидкість: x1");
+      }
+    }
+  };
+
+  recognition.onerror = function (event) {
+    console.error("Помилка розпізнавання:", event.error);
+  };
+
+  recognition.start(); // Почати слухання
+}
+
 window.onload = setup;
+
+function sleep(ms) {
+  return new Promise((resolve) =>
+    setTimeout(resolve, ms * (1 / speedMultiplier))
+  );
+}
