@@ -28,19 +28,36 @@
   </a-scene>
 
   <!-- Управління -->
-  <div id="controls">
-    <button onclick="startBubble()">Bubble Sort</button>
-    <button onclick="startQuick()">Quick Sort</button>
-    <button onclick="startMerge()">Merge Sort</button>
-    <button onclick="resetBars()">Reset</button>
+  <!-- Управління -->
+<div id="controls">
+  <button onclick="startBubble()">Bubble Sort</button>
+  <button onclick="startQuick()">Quick Sort</button>
+  <button onclick="startMerge()">Merge Sort</button>
+  <button onclick="resetBars()">Reset</button>
 
-    <!-- Інформація про масиви -->
-    <div id="array-info">
-      <p><strong>Original:</strong> <span id="original-array">-</span></p>
-      <p><strong>Sorted by:</strong> <span id="sorted-by">-</span></p>
-      <p><strong>Result:</strong> <span id="sorted-array">-</span></p>
-    </div>
+  <!-- Керування швидкістю -->
+  <div style="margin-top: 10px;">
+    <strong>Швидкість:</strong>
+    <button onclick="changeSpeed(-0.2)">-</button>
+    <span id="speed-value">x1.0</span>
+    <button onclick="changeSpeed(0.2)">+</button>
   </div>
+
+  <!-- Голосове керування -->
+  <div style="margin-top: 10px;">
+    <button id="voice-btn" onclick="toggleVoiceControl()">Увімкнути голосове керування</button>
+  </div>
+
+  <!-- Показ масивів -->
+  <div id="array-info">
+    <p><strong>Original:</strong> <span id="original-array">-</span></p>
+    <p><strong>Sorted by:</strong> <span id="sorted-by">-</span></p>
+    <p><strong>Result:</strong> <span id="sorted-array">-</span></p>
+  </div>
+</div>
+
+<!-- Час сортування -->
+<div id="timings" style="position: absolute; top: 20px; right: 20px;"></div>
 
   <!-- Скрипти -->
   <script src="sorting/bubble.js"></script>
