@@ -67,9 +67,10 @@ function showSortedArray(arr, sortName) {
 // Порівняння часу сортування
 async function measureSortTime(sortFunction, sortName) {
   const arr = JSON.parse(JSON.stringify(bars)); // глибока копія
+  const originalArr = [...arr]; // для відображення
 
   const startTime = performance.now();
-  await sortFunction([...arr]);
+  await sortFunction([...originalArr]); // передаємо нову копію
   const endTime = performance.now();
 
   const duration = endTime - startTime;
@@ -171,16 +172,35 @@ function resetSpeed() {
 }
 
 // Запуск алгоритмів
+async function runSort(sortFunction, sortName) {
+  const arr = JSON.parse(JSON.stringify(bars)); // глибока копія
+  showOriginalArray(arr);
+
+  const startTime = performance.now();
+  const sortedArr = await sortFunction([...arr]);
+  const endTime = performance.now();
+
+  const duration = endTime - startTime;
+  updateComparisonTable(sortName, duration.toFixed(2));
+  showSortedArray(sortedArr, sortName);
+
+  // оновлюємо стовпчики на основі відсортованого масиву
+  for (let i = 0; i < sortedArr.length; i++) {
+    updateBar(i, sortedArr[i]);
+    await sleep(); // щоб була анімація оновлення
+  }
+}
+
 function startBubble() {
-  measureSortTime(bubbleSort, "Bubble Sort");
+  runSort(bubbleSort, "Bubble Sort");
 }
 
 function startQuick() {
-  measureSortTime(() => quickSort(JSON.parse(JSON.stringify(bars))), "Quick Sort");
+  runSort(quickSort, "Quick Sort");
 }
 
 function startMerge() {
-  measureSortTime(() => mergeSort(JSON.parse(JSON.stringify(bars))), "Merge Sort");
+  runSort(mergeSort, "Merge Sort");
 }
 
 window.onload = () => {
